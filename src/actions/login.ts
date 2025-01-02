@@ -4,6 +4,7 @@
 
 import * as z from "zod";
 import { loginSchema } from "@/schemas/index";
+import { signIn } from "../../auth";
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
   const validatedFields = loginSchema.safeParse(values);
@@ -14,5 +15,5 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     };
   }
 
-  return { success: "email sent!" };
+  return await signIn("credentials", validatedFields.data);
 };
