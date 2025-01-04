@@ -39,11 +39,11 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data: zod.infer<typeof loginSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(() => {
-      login(data);
+      login(data).then((data) => {
+        setError(data?.error as string);
+        setSuccess(data?.success as string);
+      });
     });
   };
 
