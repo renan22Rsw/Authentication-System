@@ -1,6 +1,8 @@
 import React from "react";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
+import NavBar from "@/components/navbar";
+import UserInfo from "@/components/userInfo";
 
 const WelcomePage = async () => {
   const session = await auth();
@@ -10,9 +12,10 @@ const WelcomePage = async () => {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <h1 className="text-3xl font-semibold">Welcome {session?.user?.name}</h1>
-    </div>
+    <>
+      <NavBar />
+      <UserInfo user={session.user?.name as string} />
+    </>
   );
 };
 

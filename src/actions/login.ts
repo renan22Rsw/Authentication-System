@@ -19,13 +19,10 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
     await signIn("credentials", {
       ...validatedFields.data,
       redirect: true,
-      redirectTo: "/welcome",
     });
 
     return { success: "User logged in" };
   } catch (err) {
-    if (err.type === "CredentialsSignin") {
-      return { error: "Invalid email or password" };
-    }
+    console.log(err);
   }
 };
