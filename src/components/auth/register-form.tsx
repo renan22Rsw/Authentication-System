@@ -24,11 +24,13 @@ import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const form = useForm<zod.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -44,10 +46,14 @@ const RegisterForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      register(data).then((data) => {
-        setError(data?.error as string);
-        setSuccess(data?.success as string);
-      });
+      register(data)
+        .then((data) => {
+          setError(data?.error as string);
+          setSuccess(data?.success as string);
+        })
+        .finally(() => {
+          router.push("/welcome");
+        });
     });
   };
 
