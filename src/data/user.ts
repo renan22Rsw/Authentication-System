@@ -1,3 +1,5 @@
+"use server";
+
 import db from "@/database";
 import bycrypt from "bcrypt";
 

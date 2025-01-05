@@ -11,33 +11,41 @@ import bycrypt from "bcrypt"; //lib para criptografia
 import { getUserByEmail } from "@/data/user";
 
 export const register = async (values: z.infer<typeof registerSchema>) => {
-  const validatedFields = registerSchema.safeParse(values);
+  try {
+    const validatedFields = registerSchema.safeParse(values);
 
-  if (!validatedFields.success) {
+    if (!validatedFields.success) {
+      return {
+        error: "Invalid email or password",
+      };
+    }
+
+    const { email, name, password } = validatedFields.data;
+
+    const hashedPassword = bycrypt.hashSync(password, 10); //variavel que contem senha criptografada
+
+    const existingEmail = await getUserByEmail(email);
+
+    if (existingEmail) {
+      return {
+        error: "Email already in use",
+      };
+    }
+
+    await db.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+      },
+    });
+
+    return { success: "User registered" };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: Error | any) {
     return {
-      error: "Invalid email or password",
+      error: "something went wrong",
+      err,
     };
   }
-
-  const { email, name, password } = validatedFields.data;
-
-  const hashedPassword = bycrypt.hashSync(password, 10); //variavel que contem senha criptografada
-
-  const existingEmail = await getUserByEmail(email);
-
-  if (existingEmail) {
-    return {
-      error: "Email already in use",
-    };
-  }
-
-  await db.user.create({
-    data: {
-      email,
-      name,
-      password: hashedPassword,
-    },
-  });
-
-  return { success: "User created" };
 };

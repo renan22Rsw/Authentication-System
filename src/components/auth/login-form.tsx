@@ -25,7 +25,7 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -49,9 +49,9 @@ const RegisterForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Create an account"
-      backButton="Already have an account?"
-      backButtonHref="/auth/login"
+      headerLabel=""
+      backButton="Don't have an account?"
+      backButtonHref="/auth/register"
       showSocial
     >
       <Form {...form}>
@@ -104,4 +104,4 @@ const RegisterForm = () => {
     </CardWrapper>
   );
 };
-export default RegisterForm;
+export default LoginForm;
