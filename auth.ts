@@ -14,6 +14,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
       },
       authorize: async (credentials) => {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
         //logica de autenticação
 
         //procura usuario com credentials
@@ -22,10 +25,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           credentials.password as string,
         );
 
-        return user;
+        if (user) {
+          return user;
+        }
+
+        return null;
       },
     }),
   ],
 
   secret: process.env.AUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
+
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.name = user.name;
+        token.email = user.email;
+        token.sub = user.id;
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (token) {
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.id = token.sub as string;
+      }
+      return session;
+    },
+  },
 });
