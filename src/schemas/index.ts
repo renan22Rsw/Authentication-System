@@ -23,3 +23,9 @@ export const registerSchema = z.object({
     message: "Minimum 6 characteres required",
   }),
 });
+
+export const updateUsername = z.object({
+  username: z.string().min(3, {
+    message: "Name is required",
+  }),
+});

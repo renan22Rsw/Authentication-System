@@ -47,12 +47,17 @@ const RegisterForm = () => {
 
     startTransition(() => {
       register(data)
-        .then((data) => {
-          setError(data?.error as string);
-          setSuccess(data?.success as string);
+        .then((response) => {
+          if (response.success) {
+            setSuccess(response.success);
+            router.push("/welcome"); // Redireciona apenas em caso de sucesso
+          } else {
+            setError(response.error || "Ocorreu um erro inesperado.");
+          }
         })
-        .finally(() => {
-          router.push("/welcome");
+        .catch((error) => {
+          setError("Erro ao registrar. Tente novamente.");
+          console.error(error); // Opcional: Log do erro para depuração
         });
     });
   };

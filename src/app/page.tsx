@@ -1,8 +1,11 @@
 import LoginButton from "@/components/auth/login-button";
 import { Button } from "@/components/ui/button";
 import React from "react";
+import { auth } from "../../auth";
 
-const Home = () => {
+const Home = async () => {
+  const session = await auth();
+
   return (
     <main className="flex h-screen flex-col items-center justify-center bg-sky-600">
       <div className="space-y-6">
@@ -11,11 +14,19 @@ const Home = () => {
         </h1>
         <p className="text-lg text-white">Your secure authentication portal</p>
         <div>
-          <LoginButton>
-            <Button variant={"secondary"} size={"lg"}>
-              Sign in
-            </Button>
-          </LoginButton>
+          {session?.user ? (
+            <LoginButton>
+              <Button variant={"secondary"} size={"lg"}>
+                Entrar
+              </Button>
+            </LoginButton>
+          ) : (
+            <LoginButton>
+              <Button variant={"secondary"} size={"lg"}>
+                Sign in
+              </Button>
+            </LoginButton>
+          )}
         </div>
       </div>
     </main>

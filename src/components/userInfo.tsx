@@ -3,11 +3,7 @@ interface UserInfoProps {
 }
 
 const UserInfo = ({ user }: UserInfoProps) => {
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <h1 className="text-4xl">Welcome Back {user}</h1>
-    </div>
-  );
+  return <h1 className="text-center text-3xl">Hello, {user}</h1>;
 };
 
 export default UserInfo;

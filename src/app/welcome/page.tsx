@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import NavBar from "@/components/navbar";
 import UserInfo from "@/components/userInfo";
 
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 const WelcomePage = async () => {
   const session = await auth();
 
@@ -11,10 +14,18 @@ const WelcomePage = async () => {
     redirect("/auth/login");
   }
 
+  console.log(session.user);
+
   return (
     <>
       <NavBar />
-      <UserInfo user={session.user?.name as string} />
+
+      <main className="flex h-screen flex-col items-center justify-center space-y-4">
+        <UserInfo user={session.user?.name as string} />
+        <Link href={"/settings"}>
+          <Button>Settings</Button>
+        </Link>
+      </main>
     </>
   );
 };
