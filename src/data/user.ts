@@ -32,7 +32,7 @@ export const getUserByCredentials = async (email: string, password: string) => {
   );
 
   if (isPasswordCorrect) {
-    return { email: user.email, name: user.name };
+    return { email: user.email, name: user.name, id: user.id };
   }
 
   return null;

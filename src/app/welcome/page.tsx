@@ -14,8 +14,6 @@ const WelcomePage = async () => {
     redirect("/auth/login");
   }
 
-  console.log(session.user);
-
   return (
     <>
       <NavBar />

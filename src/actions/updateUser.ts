@@ -8,16 +8,21 @@ import db from "@/database";
 export const updateUser = async (values: z.infer<typeof updateUsername>) => {
   const session = await auth();
 
-  if (!session?.user?.id) {
-    return {
-      error: "No authorized",
-      data: null,
-    };
+  console.log(session?.user?.id);
+
+  const userExist = await db.user.findUnique({
+    where: {
+      id: session?.user?.id,
+    },
+  });
+
+  if (!userExist) {
+    console.log("user not found");
   }
 
   await db.user.update({
     where: {
-      id: session.user.id,
+      id: session?.user?.id,
     },
 
     data: {
