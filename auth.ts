@@ -1,4 +1,5 @@
-import { getUserByCredentials } from "@/data/user";
+import { getUserByCredentials, getUserByEmail } from "@/data/user";
+import db from "@/database";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
@@ -60,6 +61,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.sub as string;
       }
       return session;
+    },
+
+    async signIn({ user }) {
+      //função cria um user no banco de dados, pegando as informações do github
+      const email = user?.email;
+      const existingUser = await getUserByEmail(email as string);
+
+      if (!existingUser) {
+        await db.user.create({
+          data: {
+            name: user?.name as string,
+            email: user?.email as string,
+          },
+        });
+      }
+      return true;
     },
   },
 });
