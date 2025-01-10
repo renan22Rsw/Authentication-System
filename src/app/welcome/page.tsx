@@ -6,6 +6,9 @@ import UserInfo from "@/components/userInfo";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import UserImage from "@/components/user-image";
+
+import noPicture from "../../../public/no-user-picture.jpg";
 
 const WelcomePage = async () => {
   const session = await auth();
@@ -23,6 +26,9 @@ const WelcomePage = async () => {
         <Link href={"/settings"}>
           <Button>Settings</Button>
         </Link>
+        <UserImage
+          img={session.user?.image ? (session.user.image as string) : noPicture}
+        />
       </main>
     </>
   );
