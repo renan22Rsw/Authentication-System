@@ -3,6 +3,7 @@ import db from "@/database";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -35,7 +36,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
 
-    GitHub,
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID as string,
+      clientSecret: process.env.AUTH_GITHUB_SECRET as string,
+    }),
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID as string,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+    }),
   ],
 
   secret: process.env.AUTH_SECRET,
